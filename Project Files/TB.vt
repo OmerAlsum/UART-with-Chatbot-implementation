@@ -1,0 +1,44 @@
+`timescale 1 ns/100 ps
+module TB();
+
+reg clk_Device1, clk_Device2;
+reg Reset_Device1, Reset_Device2;
+reg [63:0] message_in_Device1, message_in_Device2;
+reg load_message_Device1, load_message_Device2;
+
+// Same name instantiation requires no periods and no parentheses
+Top_Level Top (
+    Reset_Device1,
+    Reset_Device2,
+    clk_Device1,
+    clk_Device2,
+    load_message_Device1, 
+    load_message_Device2,
+    message_in_Device1,
+    message_in_Device2
+);
+
+
+
+initial 
+
+begin
+clk_Device1= 0; clk_Device2 =0; Reset_Device1=1; Reset_Device2 =1;
+
+#10 Reset_Device1=0; Reset_Device2 =0;
+
+#10 load_message_Device1=1; message_in_Device1= 64'h68656C6C6F202020;
+
+#100 load_message_Device1=0;
+
+end
+
+always
+#10 clk_Device1 = ~clk_Device1;
+
+
+always
+#10 clk_Device2 = ~clk_Device2;
+
+
+endmodule
